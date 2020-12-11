@@ -1,0 +1,279 @@
+[gd_resource type="VisualShader" load_steps=25 format=2]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=1]
+operator = 3
+
+[sub_resource type="VisualShaderNodeVectorOp" id=2]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
+
+[sub_resource type="VisualShaderNodeExpression" id=3]
+output_port_for_preview = 0
+size = Vector2( 921, 421.3 )
+expression = "output = fract(cos(dot(input.xy, vec2(13.9898, 8.141))) * 43758.5453);"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=4]
+default_input_values = [ 0, 0.0, 1, 3.14159 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=5]
+function = 1
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=6]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=7]
+function = 19
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=8]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=9]
+
+[sub_resource type="VisualShaderNodeTransformCompose" id=10]
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=11]
+uniform_name = "albedo"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=12]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=13]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVectorOp" id=14]
+output_port_for_preview = 0
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0 ) ]
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=15]
+uniform_name = "randomize_rotation"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=16]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=17]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeInput" id=18]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=19]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id=20]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 4, 4, 0 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorFunc" id=21]
+output_port_for_preview = 0
+function = 20
+
+[sub_resource type="VisualShaderNodeExpression" id=22]
+size = Vector2( 780.8, 504.3 )
+expression = "vec2 texture_coordinate = lod_uv.xy * vec2(textureSize(albedo_texture, 0));
+vec2 dx_vtc = dFdx(texture_coordinate);
+vec2 dy_vtc = dFdy(texture_coordinate);
+float delta_max_sqr = max(dot(dx_vtc, dx_vtc), dot(dy_vtc, dy_vtc));
+float mml = 0.5 * log2(delta_max_sqr);
+float lod = max(0.0, mml);
+output = textureLod(albedo_texture, uv.xy, lod).rgb;"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=23]
+uniform_name = "tiling"
+
+[sub_resource type="VisualShaderNodeVectorFunc" id=24]
+function = 25
+
+[resource]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform float randomize_rotation;
+uniform float tiling;
+uniform sampler2D albedo;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// ScalarUniform:27
+	float n_out27p0 = randomize_rotation;
+
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// ScalarUniform:6
+	float n_out6p0 = tiling;
+
+// VectorOp:4
+	vec3 n_out4p0 = n_out3p0 * vec3(n_out6p0);
+
+// VectorOp:11
+	vec3 n_in11p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_out11p0 = n_out4p0 + n_in11p1;
+
+// VectorFunc:8
+	vec3 n_out8p0 = round(n_out11p0);
+
+// VectorOp:10
+	vec3 n_out10p0 = n_out8p0 / vec3(n_out6p0);
+
+// Expression:12
+	float n_out12p0;
+	n_out12p0 = 0.0;
+	{
+		n_out12p0 = fract(cos(dot(n_out10p0.xy, vec2(13.9898, 8.141))) * 43758.5453);
+	}
+
+// ScalarOp:28
+	float n_in28p1 = 2.00000;
+	float n_out28p0 = n_out12p0 * n_in28p1;
+
+// ScalarOp:29
+	float n_in29p1 = 1.00000;
+	float n_out29p0 = n_out28p0 - n_in29p1;
+
+// ScalarOp:30
+	float n_out30p0 = n_out27p0 * n_out29p0;
+
+// ScalarOp:13
+	float n_in13p1 = 3.14159;
+	float n_out13p0 = n_out30p0 * n_in13p1;
+
+// ScalarFunc:14
+	float n_out14p0 = cos(n_out13p0);
+
+// ScalarFunc:15
+	float n_out15p0 = sin(n_out13p0);
+
+// ScalarFunc:16
+	float n_out16p0 = -(n_out15p0);
+
+// VectorCompose:17
+	float n_in17p2 = 0.00000;
+	vec3 n_out17p0 = vec3(n_out14p0, n_out16p0, n_in17p2);
+
+// VectorCompose:18
+	float n_in18p2 = 0.00000;
+	vec3 n_out18p0 = vec3(n_out15p0, n_out14p0, n_in18p2);
+
+// TransformCompose:19
+	vec3 n_in19p2 = vec3(0.00000, 0.00000, 0.00000);
+	vec3 n_in19p3 = vec3(0.00000, 0.00000, 0.00000);
+	mat4 n_out19p0 = mat4(vec4(n_out17p0, 0.0), vec4(n_out18p0, 0.0), vec4(n_in19p2, 0.0), vec4(n_in19p3, 1.0));
+
+// VectorFunc:40
+	vec3 n_out40p0 = fract(n_out4p0);
+
+// VectorOp:21
+	vec3 n_in21p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_out21p0 = n_out40p0 - n_in21p1;
+
+// TransformVectorMult:20
+	vec3 n_out20p0 = (n_out19p0 * vec4(n_out21p0, 1.0)).xyz;
+
+// VectorOp:25
+	vec3 n_in25p1 = vec3(0.50000, 0.50000, 0.00000);
+	vec3 n_out25p0 = n_out20p0 + n_in25p1;
+
+// TextureUniform:2
+	vec3 n_out2p0;
+	float n_out2p1;
+	{
+		vec4 n_tex_read = texture(albedo, UV.xy);
+		n_out2p0 = n_tex_read.rgb;
+		n_out2p1 = n_tex_read.a;
+	}
+
+// Expression:41
+	vec3 n_out41p0;
+	n_out41p0 = vec3(0.0, 0.0, 0.0);
+	{
+		vec2 texture_coordinate = n_out4p0.xy * vec2(textureSize(albedo, 0));
+		vec2 dx_vtc = dFdx(texture_coordinate);
+		vec2 dy_vtc = dFdy(texture_coordinate);
+		float delta_max_sqr = max(dot(dx_vtc, dx_vtc), dot(dy_vtc, dy_vtc));
+		float mml = 0.5 * log2(delta_max_sqr);
+		float lod = max(0.0, mml);
+		n_out41p0 = textureLod(albedo, n_out25p0.xy, lod).rgb;
+	}
+
+// Output:0
+	ALBEDO = n_out41p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -879.86, -85.8827 )
+nodes/fragment/0/position = Vector2( 1500, 0 )
+nodes/fragment/2/node = SubResource( 11 )
+nodes/fragment/2/position = Vector2( 200, 200 )
+nodes/fragment/3/node = SubResource( 18 )
+nodes/fragment/3/position = Vector2( -2000, -200 )
+nodes/fragment/4/node = SubResource( 20 )
+nodes/fragment/4/position = Vector2( -1700, -200 )
+nodes/fragment/6/node = SubResource( 23 )
+nodes/fragment/6/position = Vector2( -2000, 0 )
+nodes/fragment/8/node = SubResource( 24 )
+nodes/fragment/8/position = Vector2( -1700, 160 )
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( -1700, 280 )
+nodes/fragment/11/node = SubResource( 2 )
+nodes/fragment/11/position = Vector2( -1700, -20 )
+nodes/fragment/12/node = SubResource( 3 )
+nodes/fragment/12/position = Vector2( -2200, 460 )
+nodes/fragment/12/size = Vector2( 921, 421.3 )
+nodes/fragment/12/input_ports = "0,1,input;"
+nodes/fragment/12/output_ports = "0,0,output;"
+nodes/fragment/12/expression = "output = fract(cos(dot(input.xy, vec2(13.9898, 8.141))) * 43758.5453);"
+nodes/fragment/13/node = SubResource( 4 )
+nodes/fragment/13/position = Vector2( -900, 440 )
+nodes/fragment/14/node = SubResource( 5 )
+nodes/fragment/14/position = Vector2( -900, 620 )
+nodes/fragment/15/node = SubResource( 6 )
+nodes/fragment/15/position = Vector2( -900, 740 )
+nodes/fragment/16/node = SubResource( 7 )
+nodes/fragment/16/position = Vector2( -900, 860 )
+nodes/fragment/17/node = SubResource( 8 )
+nodes/fragment/17/position = Vector2( -520, 460 )
+nodes/fragment/18/node = SubResource( 9 )
+nodes/fragment/18/position = Vector2( -520, 620 )
+nodes/fragment/19/node = SubResource( 10 )
+nodes/fragment/19/position = Vector2( -200, 460 )
+nodes/fragment/20/node = SubResource( 12 )
+nodes/fragment/20/position = Vector2( -200, 660 )
+nodes/fragment/21/node = SubResource( 13 )
+nodes/fragment/21/position = Vector2( -900, -200 )
+nodes/fragment/25/node = SubResource( 14 )
+nodes/fragment/25/position = Vector2( 200, 600 )
+nodes/fragment/27/node = SubResource( 15 )
+nodes/fragment/27/position = Vector2( -1200, 260 )
+nodes/fragment/28/node = SubResource( 16 )
+nodes/fragment/28/position = Vector2( -1200, 460 )
+nodes/fragment/29/node = SubResource( 17 )
+nodes/fragment/29/position = Vector2( -1200, 640 )
+nodes/fragment/30/node = SubResource( 19 )
+nodes/fragment/30/position = Vector2( -900, 260 )
+nodes/fragment/40/node = SubResource( 21 )
+nodes/fragment/40/position = Vector2( -1300, -200 )
+nodes/fragment/41/node = SubResource( 22 )
+nodes/fragment/41/position = Vector2( 600, 0 )
+nodes/fragment/41/size = Vector2( 780.8, 504.3 )
+nodes/fragment/41/input_ports = "0,1,uv;1,1,lod_uv;2,4,albedo_texture;"
+nodes/fragment/41/output_ports = "0,1,output;"
+nodes/fragment/41/expression = "vec2 texture_coordinate = lod_uv.xy * vec2(textureSize(albedo_texture, 0));
+vec2 dx_vtc = dFdx(texture_coordinate);
+vec2 dy_vtc = dFdy(texture_coordinate);
+float delta_max_sqr = max(dot(dx_vtc, dx_vtc), dot(dy_vtc, dy_vtc));
+float mml = 0.5 * log2(delta_max_sqr);
+float lod = max(0.0, mml);
+output = textureLod(albedo_texture, uv.xy, lod).rgb;"
+nodes/fragment/connections = PoolIntArray( 8, 0, 10, 0, 4, 0, 11, 0, 11, 0, 8, 0, 6, 0, 10, 1, 10, 0, 12, 0, 13, 0, 14, 0, 13, 0, 15, 0, 15, 0, 16, 0, 14, 0, 17, 0, 16, 0, 17, 1, 17, 0, 19, 0, 18, 0, 19, 1, 19, 0, 20, 0, 15, 0, 18, 0, 20, 0, 25, 0, 14, 0, 18, 1, 21, 0, 20, 1, 12, 0, 28, 0, 28, 0, 29, 0, 27, 0, 30, 0, 29, 0, 30, 1, 30, 0, 13, 0, 40, 0, 21, 0, 41, 0, 0, 0, 25, 0, 41, 0, 3, 0, 4, 0, 4, 0, 40, 0, 6, 0, 4, 1, 4, 0, 41, 1, 2, 2, 41, 2 )
