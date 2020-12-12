@@ -19,7 +19,7 @@ float mip_map_level(in vec2 texture_coordinate) {
 void fragment() {
 	vec2 tiled_UV_raw = UV * tiling;
 	vec2 tiled_UV = fract(tiled_UV_raw) - 0.5;
-	vec2 unique_val = round(UV * tiling + 0.5) / tiling;
+	vec2 unique_val = floor(UV * tiling) / tiling;
 	float rotation = (rand(unique_val) * 2.0 - 1.0) * randomize_rotation * 3.14;
 	float cosine = cos(rotation);
 	float sine = sin(rotation);
