@@ -1,4 +1,5 @@
 shader_type spatial;
+//render_mode specular_schlick_ggx;
 
 uniform sampler2D albedo_texture;
 uniform float tiling = 1.0;
@@ -27,4 +28,7 @@ void fragment() {
 	vec2 new_uv = rotation_mat * tiled_UV + 0.5;
 	float lod = mip_map_level(tiled_UV_raw * vec2(textureSize(albedo_texture, 0)));
 	ALBEDO = textureLod(albedo_texture, new_uv, lod).rgb;
+	SPECULAR = .1;
+    ROUGHNESS = 1.0;
+    METALLIC = 0.0;
 }
