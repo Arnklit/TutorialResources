@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/grass_straw.obj-51027a4338858db480209e3245334277.mesh"
+
+[deps]
+
+files=[ "res://.import/grass_straw.obj-51027a4338858db480209e3245334277.mesh" ]
+
+source_file="res://assets/grass_straw.obj"
+dest_files=[ "res://.import/grass_straw.obj-51027a4338858db480209e3245334277.mesh", "res://.import/grass_straw.obj-51027a4338858db480209e3245334277.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
