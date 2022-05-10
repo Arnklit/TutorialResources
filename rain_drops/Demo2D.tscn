@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://raindrops2d.shader" type="Shader" id=1]
+[ext_resource path="res://raindrops.png" type="Texture" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/water_color = Color( 0.270588, 0.419608, 1, 1 )
+shader_param/ring_color = Color( 1, 1, 1, 1 )
+shader_param/ring_width = 0.1
+shader_param/fadeout = 0.2
+shader_param/pattern = ExtResource( 2 )
+
+[node name="Demo2D" type="Node2D"]
+
+[node name="TextureRect" type="ColorRect" parent="."]
+material = SubResource( 1 )
+margin_right = 512.0
+margin_bottom = 512.0
