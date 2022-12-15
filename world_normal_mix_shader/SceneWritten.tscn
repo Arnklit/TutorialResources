@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://models/boulder.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://textures/rock/rock_orm.png" type="Texture" id=2]
+[ext_resource path="res://textures/rock/rock_normal.png" type="Texture" id=3]
+[ext_resource path="res://textures/moss/moss_orm.png" type="Texture" id=4]
+[ext_resource path="res://textures/rock/rock_albedo.png" type="Texture" id=5]
+[ext_resource path="res://textures/moss/moss_albedo.png" type="Texture" id=6]
+[ext_resource path="res://textures/moss/moss_normal.png" type="Texture" id=7]
+[ext_resource path="res://shaders/world_normal_mix.gdshader" type="Shader" id=8]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 8 )
+shader_param/offset = 0.385
+shader_param/fade = 0.126
+shader_param/uv_scale_fg = Vector3( 4, 4, 1 )
+shader_param/uv_scale_bg = Vector3( 2, 2, 1 )
+shader_param/albedo_texture_fg = ExtResource( 6 )
+shader_param/orm_texture_fg = ExtResource( 4 )
+shader_param/normal_texture_fg = ExtResource( 7 )
+shader_param/albedo_texture_bg = ExtResource( 5 )
+shader_param/orm_texture_bg = ExtResource( 2 )
+shader_param/normal_texture_bg = ExtResource( 3 )
+
+[sub_resource type="ProceduralSky" id=2]
+
+[sub_resource type="Environment" id=3]
+background_mode = 2
+background_sky = SubResource( 2 )
+tonemap_mode = 4
+ssao_enabled = true
+ssao_ao_channel_affect = 1.0
+
+[node name="Scene" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.509973, 0, -0.860191, 0.853808, 0.121592, 0.506189, 0.104593, -0.99258, 0.0620087, 0.574581, 0.63383, 0.073374 )
+material_override = SubResource( 1 )
+mesh = ExtResource( 1 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( -0.21612, 0.298468, 0.929628, 0.976346, 0.072224, 0.203792, -0.00631603, 0.951683, -0.307017, 1.48424, 0.468788, -0.465924 )
+material_override = SubResource( 1 )
+mesh = ExtResource( 1 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 0.86603, 0.44063, -0.236301, 0.160212, -0.692244, -0.703655, -0.473629, 0.571528, -0.670098, 0.977532, -1.87321, -1.06419 )
+material_override = SubResource( 1 )
+mesh = ExtResource( 1 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 3 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 5, 0, 0 )

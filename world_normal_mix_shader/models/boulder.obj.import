@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/boulder.obj-db67c73e772463c9262a5e531240130a.mesh"
+
+[deps]
+
+files=[ "res://.import/boulder.obj-db67c73e772463c9262a5e531240130a.mesh" ]
+
+source_file="res://models/boulder.obj"
+dest_files=[ "res://.import/boulder.obj-db67c73e772463c9262a5e531240130a.mesh", "res://.import/boulder.obj-db67c73e772463c9262a5e531240130a.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286
