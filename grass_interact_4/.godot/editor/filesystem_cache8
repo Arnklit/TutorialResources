@@ -1,0 +1,12 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1695145302
+default_env.tres::Environment::-1::1695145198::0::1::::<><>::
+grass.gdshader::Shader::-1::1695145198::0::1::::<><>::
+grass.tres::VisualShader::-1::1695145198::0::1::::<><>::
+grass_mover.gd::GDScript::-1::1695145198::0::1::::<>Node3D<>::
+icon.png::CompressedTexture2D::5559799836094008936::1612275683::1695145304::1::::<><>::
+World.tscn::PackedScene::-1::1695145198::0::1::::<><>::res://grass_mover.gd<>res://assets/grass_straw.obj<>res://grass.gdshader<>res://grass.tres
+::res://assets/::1695144724
+grass_straw.obj::Mesh::5545816346687295902::1612277891::1695145304::1::::<><>::
+::res://logs/::1695144724
+godot.log::TextFile::-1::1612278178::0::1::::<><>::

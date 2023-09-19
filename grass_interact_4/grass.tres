@@ -1,0 +1,231 @@
+[gd_resource type="VisualShader" load_steps=23 format=3 uid="uid://85yr38gpphkt"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="20"]
+parameter_name = "albedo"
+
+[sub_resource type="VisualShaderNodeSmoothStep" id="1"]
+default_input_values = [0, 1.0, 1, 0.0, 2, 0.0]
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="2"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="3"]
+function = 31
+
+[sub_resource type="VisualShaderNodeInput" id="4"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="5"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="6"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="7"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="8"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="9"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="10"]
+input_name = "model_matrix"
+
+[sub_resource type="VisualShaderNodeVec3Parameter" id="11"]
+parameter_name = "player_pos"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="12"]
+parameter_name = "radius"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="21"]
+parameter_name = "power"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="22"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="13"]
+input_name = "model_matrix"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="14"]
+
+[sub_resource type="VisualShaderNodeInput" id="15"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="16"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVectorOp" id="17"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 0, 1)]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorFunc" id="18"]
+
+[sub_resource type="VisualShaderNodeVectorDistance" id="19"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx;
+
+uniform vec3 player_pos;
+uniform float radius;
+uniform float power;
+uniform vec4 albedo : source_color;
+
+
+
+void vertex() {
+// Input:16
+	vec3 n_out16p0 = VERTEX;
+
+
+// Input:19
+	mat4 n_out19p0 = MODEL_MATRIX;
+
+
+// Input:3
+	mat4 n_out3p0 = MODEL_MATRIX;
+
+
+// Input:5
+	vec3 n_out5p0 = VERTEX;
+
+
+// TransformVectorMult:4
+	vec3 n_out4p0 = (n_out3p0 * vec4(n_out5p0, 1.0)).xyz;
+
+
+// Vector3Parameter:2
+	vec3 n_out2p0 = player_pos;
+
+
+// VectorOp:6
+	vec3 n_out6p0 = n_out4p0 - n_out2p0;
+
+
+// VectorOp:7
+	vec3 n_in7p1 = vec3(1.00000, 0.00000, 1.00000);
+	vec3 n_out7p0 = n_out6p0 * n_in7p1;
+
+
+// VectorFunc:8
+	vec3 n_out8p0 = normalize(n_out7p0);
+
+
+// TransformVectorMult:11
+	vec3 n_out11p0 = (vec4(n_out8p0, 1.0) * n_out19p0).xyz;
+
+
+// Input:13
+	vec2 n_out13p0 = UV;
+
+
+// VectorDecompose:14
+	float n_out14p0 = vec3(n_out13p0, 0.0).x;
+	float n_out14p1 = vec3(n_out13p0, 0.0).y;
+	float n_out14p2 = vec3(n_out13p0, 0.0).z;
+
+
+// FloatFunc:12
+	float n_out12p0 = 1.0 - n_out14p1;
+
+
+// VectorOp:15
+	vec3 n_out15p0 = n_out11p0 * vec3(n_out12p0);
+
+
+// FloatParameter:20
+	float n_out20p0 = radius;
+
+
+// Distance:9
+	float n_out9p0 = distance(n_out2p0, n_out4p0);
+
+
+// SmoothStep:10
+	float n_in10p1 = 0.00000;
+	float n_out10p0 = smoothstep(n_out20p0, n_in10p1, n_out9p0);
+
+
+// VectorOp:18
+	vec3 n_out18p0 = n_out15p0 * vec3(n_out10p0);
+
+
+// FloatParameter:21
+	float n_out21p0 = power;
+
+
+// VectorOp:22
+	vec3 n_out22p0 = n_out18p0 * vec3(n_out21p0);
+
+
+// VectorOp:17
+	vec3 n_out17p0 = n_out16p0 + n_out22p0;
+
+
+// Output:0
+	VERTEX = n_out17p0;
+
+
+}
+
+void fragment() {
+// ColorParameter:2
+	vec4 n_out2p0 = albedo;
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(-433.6, 40.8)
+modes/cull = 2
+nodes/vertex/0/position = Vector2(1880, 560)
+nodes/vertex/2/node = SubResource("11")
+nodes/vertex/2/position = Vector2(80, 460)
+nodes/vertex/3/node = SubResource("13")
+nodes/vertex/3/position = Vector2(-200, 180)
+nodes/vertex/4/node = SubResource("14")
+nodes/vertex/4/position = Vector2(240, 180)
+nodes/vertex/5/node = SubResource("15")
+nodes/vertex/5/position = Vector2(-200, 280)
+nodes/vertex/6/node = SubResource("16")
+nodes/vertex/6/position = Vector2(540, 100)
+nodes/vertex/7/node = SubResource("17")
+nodes/vertex/7/position = Vector2(540, 280)
+nodes/vertex/8/node = SubResource("18")
+nodes/vertex/8/position = Vector2(540, 480)
+nodes/vertex/9/node = SubResource("19")
+nodes/vertex/9/position = Vector2(540, 640)
+nodes/vertex/10/node = SubResource("1")
+nodes/vertex/10/position = Vector2(540, 800)
+nodes/vertex/11/node = SubResource("2")
+nodes/vertex/11/position = Vector2(780, 580)
+nodes/vertex/12/node = SubResource("3")
+nodes/vertex/12/position = Vector2(800, 980)
+nodes/vertex/13/node = SubResource("4")
+nodes/vertex/13/position = Vector2(60, 1000)
+nodes/vertex/14/node = SubResource("5")
+nodes/vertex/14/position = Vector2(540, 980)
+nodes/vertex/15/node = SubResource("6")
+nodes/vertex/15/position = Vector2(1060, 580)
+nodes/vertex/16/node = SubResource("7")
+nodes/vertex/16/position = Vector2(1080, 340)
+nodes/vertex/17/node = SubResource("8")
+nodes/vertex/17/position = Vector2(1660, 520)
+nodes/vertex/18/node = SubResource("9")
+nodes/vertex/18/position = Vector2(1260, 680)
+nodes/vertex/19/node = SubResource("10")
+nodes/vertex/19/position = Vector2(760, 440)
+nodes/vertex/20/node = SubResource("12")
+nodes/vertex/20/position = Vector2(40, 700)
+nodes/vertex/21/node = SubResource("21")
+nodes/vertex/21/position = Vector2(1060, 960)
+nodes/vertex/22/node = SubResource("22")
+nodes/vertex/22/position = Vector2(1480, 720)
+nodes/vertex/connections = PackedInt32Array(3, 0, 4, 0, 5, 0, 4, 1, 4, 0, 6, 0, 2, 0, 6, 1, 6, 0, 7, 0, 7, 0, 8, 0, 2, 0, 9, 0, 4, 0, 9, 1, 9, 0, 10, 2, 8, 0, 11, 1, 13, 0, 14, 0, 14, 1, 12, 0, 16, 0, 17, 0, 15, 0, 18, 0, 20, 0, 10, 0, 18, 0, 22, 0, 21, 0, 22, 1, 22, 0, 17, 1, 17, 0, 0, 0, 19, 0, 11, 0, 10, 0, 18, 1, 12, 0, 15, 1, 11, 0, 15, 0)
+nodes/fragment/0/position = Vector2(460, 80)
+nodes/fragment/2/node = SubResource("20")
+nodes/fragment/2/position = Vector2(100, 80)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
